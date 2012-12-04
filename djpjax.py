@@ -1,4 +1,5 @@
 import functools
+from django.http.response import HttpResponseRedirectBase
 
 from django.views.generic.base import TemplateResponseMixin
 
@@ -31,7 +32,7 @@ def pjaxtend(parent='base.html', pjax_parent='pjax.html', context_var='parent'):
             #     return resp
             if is_pjax(request):
                 resp.context_data[context_var] = pjax_parent
-            elif parent:
+            elif parent and not issubclass(resp.__class__, HttpResponseRedirectBase):
                 resp.context_data[context_var] = parent
             return resp
         return _view
